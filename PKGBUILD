@@ -19,7 +19,6 @@ license=(
 depends=(
   glibc
   krb5 libkrb5.so libgssapi_krb5.so
-  ldns
   libedit
   libxcrypt libcrypt.so
   openssl
@@ -88,7 +87,6 @@ build() {
     --libexecdir=/usr/lib/ssh
     --sysconfdir=/etc/ssh
     --disable-strip
-    --with-ldns
     --with-libedit
     --with-security-key-builtin
     --with-ssl-engine
