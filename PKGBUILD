@@ -118,7 +118,6 @@ package() {
   install -vDm 644 ../99-archlinux.conf -t "$pkgdir/etc/ssh/sshd_config.d/"
   install -vdm 755 "$pkgdir/etc/ssh/ssh_config.d"
 
-  ln -sf ssh.1.gz "$pkgdir"/usr/share/man/man1/slogin.1.gz
   install -Dm644 LICENCE -t "$pkgdir/usr/share/licenses/$pkgname/"
 
   install -Dm644 ../sshdgenkeys.service -t "$pkgdir"/usr/lib/systemd/system/
