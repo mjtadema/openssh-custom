@@ -18,16 +18,16 @@ license=(
 )
 depends=(
   glibc
-  krb5 libkrb5.so libgssapi_krb5.so
-  libedit
-  libxcrypt libcrypt.so
-  openssl
-  pam libpam.so
-  zlib
 )
 makedepends=(
+  krb5
+  libedit
   libfido2
+  libxcrypt
   linux-headers
+  openssl
+  pam
+  zlib
 )
 optdepends=(
   'libfido2: FIDO/U2F support'
@@ -111,6 +111,15 @@ check() {
 }
 
 package() {
+  depends+=(
+    krb5 libkrb5.so libgssapi_krb5.so
+    libedit libedit.so
+    libxcrypt libcrypt.so
+    openssh libcrypto.so
+    pam libpam.so
+    zlib libz.so
+  )
+
   cd $pkgname-$pkgver
 
   make DESTDIR="$pkgdir" install
