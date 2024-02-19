@@ -7,6 +7,7 @@ pkgbase = openssh
 	license = BSD-2-Clause
 	license = BSD-3-Clause
 	license = ISC
+	license = LicenseRef-Public-Domain
 	license = MIT
 	makedepends = krb5
 	makedepends = libedit

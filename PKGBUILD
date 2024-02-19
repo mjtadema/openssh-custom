@@ -14,6 +14,7 @@ license=(
   BSD-2-Clause
   BSD-3-Clause
   ISC
+  LicenseRef-Public-Domain
   MIT
 )
 depends=(
@@ -78,6 +79,18 @@ prepare() {
   # prepend configuration option to include drop-in configuration files for ssh_config
   printf "# Include drop-in configurations\nInclude /etc/ssh/ssh_config.d/*.conf\n" | cat - ssh_config > ssh_config.tmp
   mv -v ssh_config.tmp ssh_config
+
+  # extract separate licenses
+  sed -n '89,113p' LICENCE > ../rijndael.Public-Domain.txt
+  sed -n '116,145p' LICENCE > ../ssh.BSD-3-Clause.txt
+  sed -n '148,209p' LICENCE > ../BSD-2-Clause.txt
+  sed -n '213,218p' LICENCE > ../snprintf.Public-Domain.txt
+  sed -n '222,258p' LICENCE > ../openbsd-compat.BSD-3-Clause.txt
+  sed -n '260,278p' LICENCE > ../openbsd-compat.ISC.txt
+  sed -n '280,308p' LICENCE > ../openbsd-compat.MIT.txt
+  sed -n '280,308p' LICENCE > ../openbsd-compat.MIT.txt
+  sed -n '310,338p' LICENCE > ../blowfish.BSD-3-Clause.txt
+  sed -n '340,368p' LICENCE > ../replacement.BSD-2-Clause.txt
 }
 
 build() {
@@ -128,6 +141,7 @@ package() {
   install -vdm 755 "$pkgdir/etc/ssh/ssh_config.d"
 
   install -Dm644 LICENCE -t "$pkgdir/usr/share/licenses/$pkgname/"
+  install -Dm644 ../*.txt -t "$pkgdir/usr/share/licenses/$pkgname/"
 
   install -Dm644 ../sshdgenkeys.service -t "$pkgdir"/usr/lib/systemd/system/
   install -Dm644 ../sshd.service -t "$pkgdir"/usr/lib/systemd/system/
