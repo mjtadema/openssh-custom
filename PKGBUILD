@@ -128,7 +128,7 @@ package() {
     krb5 libkrb5.so libgssapi_krb5.so
     libedit libedit.so
     libxcrypt libcrypt.so
-    openssh libcrypto.so
+    openssl libcrypto.so
     pam libpam.so
     zlib libz.so
   )
