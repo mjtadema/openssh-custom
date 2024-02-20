@@ -1,3 +1,4 @@
+# Maintainer: David Runge <dvzrv@archlinux.org>
 # Maintainer: Levente Polyak <anthraxx[at]archlinux[dot]org>
 # Maintainer: Giancarlo Razzolini <grazzolini@archlinux.org>
 # Contributor: Gaetan Bisson <bisson@archlinux.org>
