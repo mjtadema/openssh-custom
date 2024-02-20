@@ -1,7 +1,7 @@
 pkgbase = openssh
 	pkgdesc = SSH protocol implementation for remote login, command execution and file transfer
 	pkgver = 9.6p1
-	pkgrel = 2
+	pkgrel = 3
 	url = https://www.openssh.com/portable.html
 	arch = x86_64
 	license = BSD-2-Clause
@@ -60,7 +60,7 @@ pkgname = openssh
 	depends = libedit.so
 	depends = libxcrypt
 	depends = libcrypt.so
-	depends = openssh
+	depends = openssl
 	depends = libcrypto.so
 	depends = pam
 	depends = libpam.so
