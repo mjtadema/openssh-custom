@@ -106,6 +106,7 @@ build() {
     --with-ssl-engine
     --with-pam
     --with-privsep-user=nobody
+    --with-privsep-path=/usr/share/empty.sshd
     --with-kerberos5=/usr
     --with-xauth=/usr/bin/xauth
     --with-pid-dir=/run
