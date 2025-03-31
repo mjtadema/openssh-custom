@@ -4,6 +4,7 @@
 # Contributor: Gaetan Bisson <bisson@archlinux.org>
 # Contributor: Aaron Griffin <aaron@archlinux.org>
 # Contributor: judd <jvinet@zeroflux.org>
+# Modifications: matthijs
 
 pkgname=openssh
 pkgver=9.9p2
@@ -18,6 +19,8 @@ license=(
   LicenseRef-Public-Domain
   MIT
 )
+provides=(openssh)
+conflicts=(openssh)
 depends=(
   glibc
 )
@@ -26,7 +29,6 @@ makedepends=(
   libedit
   libfido2
   libxcrypt
-  linux-headers
   openssl
   pam
   zlib
@@ -69,8 +71,21 @@ b2sums=('1b5bc09482b3a807ccfee52c86c6be3c363acf0c8e774862e0ae64f76bfeb4ce7cf29b3
         '1d24cc029eccf71cee54dda84371cf9aa8d805433e751575ab237df654055dd869024b50facd8b73390717e63100c76bca28b493e0c8be9791c76a2e0d60990a')
 validpgpkeys=('7168B983815A5EEF59A4ADFD2A3F414E736060BA')  # Damien Miller <djm@mindrot.org>
 
+# manipulate some variables and arrays
+pkgname=openssh-custom
+pkgbase=openssh
+
+depends+=('linux-custom-headers'
+          'autoconf')
+
+source+=(forward.patch)
+
+b2sums+=('d098312c249dc8453b30e2c304cc5b165cb88ba967ba7667ede9d477ba9de08a2314ac106a3c37519544329dcc6ca544df53baff6f300a97c7bd948df765e0e0')
+
+sha256sums+=('62b2b3c3b4a89eb16c23660620466d485a97dbbe4a1b392889b7159a52ff57b7')
+
 prepare() {
-  cd $pkgname-$pkgver
+  cd $pkgbase-$pkgver
   # remove variable (but useless) first line in config (related to upstream VCS)
   sed '/^#.*\$.*\$$/d' -i ssh{,d}_config
 
@@ -81,6 +96,8 @@ prepare() {
   printf "# Include drop-in configurations\nInclude /etc/ssh/ssh_config.d/*.conf\n" | cat - ssh_config > ssh_config.tmp
   mv -v ssh_config.tmp ssh_config
 
+  # Apply forward expansion patch
+  patch -p1 -i "$srcdir/forward.patch"
   # extract separate licenses
   sed -n '89,113p' LICENCE > ../rijndael.Public-Domain.txt
   sed -n '116,145p' LICENCE > ../ssh.BSD-3-Clause.txt
@@ -114,7 +131,7 @@ build() {
     --without-zlib-version-check
   )
 
-  cd $pkgname-$pkgver
+  cd $pkgbase-$pkgver
 
   ./configure "${configure_options[@]}"
   make
@@ -122,7 +139,7 @@ build() {
 
 check() {
   # NOTE: make t-exec does not work in our build environment
-  make file-tests interop-tests unit -C $pkgname-$pkgver
+  make file-tests interop-tests unit -C $pkgbase-$pkgver
 }
 
 package() {
@@ -135,7 +152,7 @@ package() {
     zlib libz.so
   )
 
-  cd $pkgname-$pkgver
+  cd $pkgbase-$pkgver
 
   make DESTDIR="$pkgdir" install
 
@@ -157,7 +174,7 @@ package() {
   install -Dm644 "$pkgdir/etc/ssh/sshd_config" -t "$pkgdir"/usr/share/factory/etc/ssh/
   install -vDm 644 ../99-archlinux.conf -t "$pkgdir/usr/share/factory/etc/ssh/sshd_config.d/"
 
-  install -vDm 644 ../$pkgname.tmpfiles "$pkgdir/usr/lib/tmpfiles.d/$pkgname.conf"
+  install -vDm 644 ../$pkgbase.tmpfiles "$pkgdir/usr/lib/tmpfiles.d/$pkgbase.conf"
 
   install -Dm755 contrib/findssl.sh -t "$pkgdir"/usr/bin/
   install -Dm755 contrib/ssh-copy-id -t "$pkgdir"/usr/bin/
